@@ -17,6 +17,7 @@ using static System.Net.Mime.MediaTypeNames;
 using UnityEngine.Experimental.GlobalIllumination;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using XCharts.Runtime;
 
 
 
@@ -150,10 +151,10 @@ public class NewBehaviourScript : MonoBehaviour
         {
             Geometry.transform.localScale = new Vector3(checkedScale, checkedScale, checkedScale);
             //appliedScaleToGeometry = true;
-            UnityEngine.Debug.Log("[NewBehaviourScript] set scene scale to "+checkedScale);
+            //UnityEngine.Debug.Log("[NewBehaviourScript] set scene scale to "+checkedScale);
         }
-        else 
-            UnityEngine.Debug.Log("[NewBehaviourScript] Could not find Scene");
+        //else 
+            //UnityEngine.Debug.Log("[NewBehaviourScript] Could not find Scene");
     }
 
     void LateUpdate()
@@ -214,7 +215,7 @@ public class NewBehaviourScript : MonoBehaviour
                     {
                         Geometry.transform.localScale = new Vector3(checkedScale, checkedScale, checkedScale);
                     }
-                    UnityEngine.Debug.Log("[NewBehaviourScript] From tracks, checkedScale set to " + checkedScale);
+                    //UnityEngine.Debug.Log("[NewBehaviourScript] From tracks, checkedScale set to " + checkedScale);
                     checkScale = true;
                 }
                 posX = -float.Parse(values[5])*checkedScale;
@@ -230,6 +231,24 @@ public class NewBehaviourScript : MonoBehaviour
                 double py = float.Parse(values[12]);
                 double pz = float.Parse(values[13]);
 
+                // COLORING 
+                bool colorByRGB = false;
+                Color trackColor = new Color();
+                try
+                {
+                    float r = float.Parse(values[15]);
+                    float g = float.Parse(values[16]);
+                    float b = float.Parse(values[17]);
+
+                    colorByRGB = true;
+                    trackColor = new Color(r, g, b);
+                    //UnityEngine.Debug.Log("[NEW-BEHAVIOUR-SCRIPT] Setting RGB values for track coloring");
+                }
+                catch
+                {
+                    colorByRGB = false;
+                    //UnityEngine.Debug.Log("[NEW-BEHAVIOUR-SCRIPT] Setting type values for track coloring");
+                }
                 string process = values[10];
 
                 double edep = ParseHelper.ParseEnergy(values[9]);
@@ -237,7 +256,7 @@ public class NewBehaviourScript : MonoBehaviour
                 if (time < minT) { minT = time; }
                 if (time > maxT) { maxT = time; }
 
-                string type = values[3];// type == charge. it is used to color tracks by GEANT4 convention.
+                string type = values[3];// type == charge. it is used to color tracks by GEANT4 convention; alternatively, coloured if RGB specified.
 
                 Vector3 position = new Vector3(posX, posY, posZ);
 
@@ -263,6 +282,8 @@ public class NewBehaviourScript : MonoBehaviour
                 trackInfo[type][trackID].py.Add(py);
                 trackInfo[type][trackID].pz.Add(pz);
                 trackInfo[type][trackID].edeps.Add(edep);
+                trackInfo[type][trackID].colorByRGB = colorByRGB;
+                trackInfo[type][trackID].color = trackColor;
 
                 particles_in_scene.Add(pname);
 
@@ -692,6 +713,8 @@ public class NewBehaviourScript : MonoBehaviour
         public List<double> energies = new List<double>();
         public string type;
         public string particleName;
+        public bool colorByRGB;
+        public Color color;
 
         public List<string> processes = new List<string>();
         public List<double> edeps = new List<double>();
@@ -757,7 +780,11 @@ public class NewBehaviourScript : MonoBehaviour
                     lineRenderer.sharedMaterial = lineMaterial;
 
                     MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-                    mpb.SetColor("_Color", GetColor(type));
+                    if (colorByRGB)
+                        mpb.SetColor("_Color", color);
+                    else
+                        mpb.SetColor("_Color", GetColor(type));
+
                     lineRenderer.SetPropertyBlock(mpb);
 
                     Rigidbody rigidbody = trackSegment.AddComponent<Rigidbody>();

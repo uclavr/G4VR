@@ -14320,7 +14320,7 @@ GameObject:
   - component: {fileID: 1762425317}
   - component: {fileID: 1762425316}
   m_Layer: 5
-  m_Name: Edep
+  m_Name: EButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

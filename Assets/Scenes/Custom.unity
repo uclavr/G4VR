@@ -12646,7 +12646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1606204015
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14281,7 +14281,7 @@ GameObject:
   - component: {fileID: 1762425317}
   - component: {fileID: 1762425316}
   m_Layer: 5
-  m_Name: Edep
+  m_Name: EButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

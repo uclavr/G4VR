@@ -92,7 +92,7 @@ public class TrackAnalyser : MonoBehaviour
     {
         //DebugBoardTextTransform = DebugBoard.transform.GetChild(0);
         Debug.Log("[TRACK-ANALYSER] Initiating start sequence for edep mode");
-        SceneSwitchButton = GameObject.Find("Edep");
+        SceneSwitchButton = GameObject.Find("EButton");
         time_board = GameObject.Find("Controls(R: 0, 25, 0)");
         EdepBoard = GameObject.Find("Edep Board");
         CutsBoard = GameObject.Find("Cuts Board");
@@ -384,7 +384,7 @@ public class TrackAnalyser : MonoBehaviour
             // --- Switching BACK from Edep scene ---
 
             // Update Scene button label
-            SceneSwitchButton = GameObject.Find("Edep");
+            SceneSwitchButton = GameObject.Find("EButton");
             //UnityEngine.Debug.Log("[TRACK-ANALYSER] Scene Switch Button is set to "+SceneSwitchButton);
             SceneSwitchButton.transform.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Edep";
 

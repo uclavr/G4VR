@@ -261,9 +261,8 @@ public class NewBehaviourScript : MonoBehaviour
                     float b = float.Parse(values[17]);
 
                     colorByRGB = true;
-                    trackColor = new Color(r, g, b);
+                    trackColor = new Color(r*255f, g*255f, b*255f);
                     UnityEngine.Debug.Log("[NEW-BEHAVIOUR-SCRIPT] Setting RGB values for track coloring");
-                    throw new Exception("Manual Error");
                 }
                 catch
                 {
@@ -392,7 +391,7 @@ public class NewBehaviourScript : MonoBehaviour
     {
         GameObject cutsButton = GameObject.Find("CButton");
         GameObject movieButton = GameObject.Find("MButton");
-        GameObject edepButton = GameObject.Find("Edep");
+        GameObject edepButton = GameObject.Find("EButton");
         cutsButton.GetComponent<Button>().onClick.AddListener(ShowCutsBoard);
         movieButton.GetComponent<Button>().onClick.AddListener(movie_init);
 
@@ -569,6 +568,8 @@ public class NewBehaviourScript : MonoBehaviour
         Menus.SetActive(true);
         Controls.SetActive(true);
         drawMeshes = true;
+        var component = GetComponent<MeshRenderer>();
+        component.enabled = true;
     }
 
     // --- Main playback controller ---
@@ -1006,7 +1007,7 @@ public class TrackMeshRenderer : MonoBehaviour
                 continue;
 
             int baseVertex = vertices.Count;
-            Color trackColor = GetColor(track.type);
+            Color trackColor = track.color;
 
             for (int i = 0; i < track.positions.Count; i++)
             {
